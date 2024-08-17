@@ -5,16 +5,11 @@ import terceroRoutes from './routes/routes.js';
 import dotenv from "dotenv";
 dotenv.config();
 
-const app = express(); // Inicializa app antes de usarla
+const app = express(); 
 const PORT = process.env.PORT || 5000;
 
-// Configura CORS antes de las rutas
-app.use(cors({
-    origin: process.env.CORS_ORIGIN,
-    methods: 'GET,POST,PUT,DELETE',           
-    credentials: true                         
-}));
 
+app.use(cors());
 app.use(express.json());
 app.use('/tercero', terceroRoutes);
 
