@@ -8,14 +8,15 @@ dotenv.config();
 const app = express(); 
 const PORT = process.env.PORT || 5000;
 
+// Configuración de CORS
+const corsOptions = {
+    origin: process.env.CORS_ORIGIN || '*', // Permitir origen especificado en variables de entorno o todos los orígenes
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
+    allowedHeaders: ['Content-Type', 'Authorization'], // Encabezados permitidos
+};
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*'); // Permite solicitudes desde cualquier origen
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  next();
-});
+app.use(cors(corsOptions));
 
-app.use(cors());
 app.use(express.json());
 app.use('/tercero', terceroRoutes);
 
