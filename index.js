@@ -8,6 +8,7 @@ dotenv.config();
 const app = express(); 
 const PORT = process.env.PORT || 5000;
 
+
 // Define la ruta
 app.get('/showTercero', (req, res) => {
     res.send('Ruta /showTercero funcionando!');
@@ -36,18 +37,6 @@ try {
 }
 
 
-//Configura el servidor para servir archivos estáticos correctamente
-app.use(express.static(path.join(__dirname, 'public'), {
-    setHeaders: (res, path) => {
-        if (path.endsWith('.js')) {
-            res.setHeader('Content-Type', 'application/javascript');
-        }
-    }
-}));
-
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
