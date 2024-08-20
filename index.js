@@ -18,14 +18,14 @@ app.use(express.json());
 
 // Servir archivos estáticos
 const __dirname = path.resolve();
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'build')));
 
 // Rutas de la API
 app.use('/tercero', terceroRoutes);
 
 // Servir el archivo HTML principal para cualquier otra ruta
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 try {
