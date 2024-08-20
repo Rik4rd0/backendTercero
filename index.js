@@ -8,8 +8,6 @@ dotenv.config();
 const app = express(); 
 const PORT = process.env.PORT || 5000;
 
-const path = require('path');
-
 // Define la ruta
 app.get('/showTercero', (req, res) => {
     res.send('Ruta /showTercero funcionando!');
