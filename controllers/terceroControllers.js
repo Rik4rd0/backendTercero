@@ -12,7 +12,6 @@ export const getAllTercero= async(req,res)=>{
     });
 }
 }
-
 //mostrar un registro
 export const getTercero = async(req,res)=>{
     try{

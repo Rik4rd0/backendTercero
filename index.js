@@ -8,11 +8,22 @@ dotenv.config();
 const app = express(); 
 const PORT = process.env.PORT || 5000;
 
+const express = require('express');
+const path = require('path');
+
+// Define la ruta
+app.get('/showTercero', (req, res) => {
+    res.send('Ruta /showTercero funcionando!');
+  });
+
+app.get('/', (req, res) => {
+    res.send('Ruta / funcionando!');
+});
 // Configuración de CORS
 const corsOptions = {
-    origin: process.env.CORS_ORIGIN || '*', // Permitir origen especificado en variables de entorno o todos los orígenes
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
-    allowedHeaders: ['Content-Type', 'Authorization'], // Encabezados permitidos
+    origin: process.env.CORS_ORIGIN || '*', 
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+    allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
 app.use(cors(corsOptions));
@@ -27,6 +38,19 @@ try {
     console.log('Error en la conexión a la base de datos:', error);
 }
 
+
+//Configura el servidor para servir archivos estáticos correctamente
+app.use(express.static(path.join(__dirname, 'public'), {
+    setHeaders: (res, path) => {
+        if (path.endsWith('.js')) {
+            res.setHeader('Content-Type', 'application/javascript');
+        }
+    }
+}));
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
