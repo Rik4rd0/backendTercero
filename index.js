@@ -1,33 +1,32 @@
 import express from 'express';
 import cors from 'cors';
-import db from './database/db.js';
-import terceroRoutes from './routes/routes.js';
-import dotenv from "dotenv";
-dotenv.config();
+import path from 'path';
+import terceroRoutes from './routes/routes.js'; // Asegúrate de que la ruta sea correcta
 
-const app = express(); 
+const app = express();
 const PORT = process.env.PORT || 5000;
 
-
-// Define la ruta
-app.get('/showTercero', (req, res) => {
-    res.send('Ruta /showTercero funcionando!');
-  });
-
-app.get('/', (req, res) => {
-    res.send('Ruta / funcionando!');
-});
 // Configuración de CORS
 const corsOptions = {
-    origin: process.env.CORS_ORIGIN || '*', 
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+    origin: process.env.CORS_ORIGIN || '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
 app.use(cors(corsOptions));
-
 app.use(express.json());
+
+// Servir archivos estáticos
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Rutas de la API
 app.use('/tercero', terceroRoutes);
+
+// Servir el archivo HTML principal para cualquier otra ruta
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 try {
     await db.authenticate();
@@ -35,7 +34,6 @@ try {
 } catch (error) {
     console.log('Error en la conexión a la base de datos:', error);
 }
-
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
